@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+   name: postgres-service
+   labels:
+     app: django
+     component: db
+     tier: backend
+spec:
+   type: ExternalName
+   externalName: 10.40.65.108
+   ports:
+   - port: 5432

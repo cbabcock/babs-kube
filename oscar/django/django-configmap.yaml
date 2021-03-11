@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: django-env
+   namespace: default
+data:
+   S3_ENDPOINT_URL: "https://AELAB-Objects.aebslab.local>:80/"
+   STATIC_BUCKET: "cwb-bucket-01"
+   DATABASE_NAME: "oscar_django"

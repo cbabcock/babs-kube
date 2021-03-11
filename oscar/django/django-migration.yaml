@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+   name: oscar-django-migrations
+   labels:
+     app: django
+     component: oscar
+     tier: frontend
+spec:
+   template:
+     metadata:
+       labels:
+         app: django
+         component: oscar
+         tier: frontend
+     spec:
+       containers:
+         - name: django
+           image: michaelatnutanix/oscar_jet:latest
+           command: ['/bin/bash', 'migrate.sh']
+           env:
+             - name: DATABASE_USER
+               valueFrom:
+                 secretKeyRef:
+                   name: postgres-credentials
+                   key: user
+             - name: DATABASE_PASSWORD
+               valueFrom:
+                 secretKeyRef:
+                   name: postgres-credentials
+                   key: password
+             - name: DATABASE_HOST
+               value: postgres-service
+             - name: ACCESS_KEY
+               valueFrom:
+                 secretKeyRef:
+                   name: object-credentials
+                   key: access
+             - name: SECRET_ACCESS_KEY
+               valueFrom:
+                 secretKeyRef:
+                   name: object-credentials
+                   key: secret
+           envFrom:
+           - configMapRef:
+               name: django-env
+       restartPolicy: Never
+   backoffLimit: 5
